@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hcode.hoj.mapper.ExamMapper">
+
+    <resultMap id="map_ExamVOList" type="top.hcode.hoj.pojo.vo.ExamVO">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="password" property="password"></result>
+        <result column="remark" property="remark"></result>
+        <result column="exam_repo_id" property="examRepoId"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="modified_user" property="modifiedUser"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="gmt_modified" property="gmtModified"></result>
+        <result column="author" property="author"></result>
+    </resultMap>
+
+    <!-- 主查询 -->
+    <select id="getExamListAdmin" resultMap="map_ExamVOList" useCache="true">
+        SELECT DISTINCT e.id, e.title, e.password, e.exam_repo_id, e.remark, e.start_time, e.end_time, e.modified_user, e.gmt_create, e.gmt_modified, e.author
+        FROM exam e
+        <where>
+            <if test="title != null and title != ''">
+                and e.title like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getExamList" resultMap="map_ExamVOList" useCache="true">
+        SELECT DISTINCT e.id, e.title, e.remark, e.exam_repo_id, e.start_time, e.end_time
+        FROM exam e
+        <where>
+            <if test="title != null and title != ''">
+                and e.title like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getExamUser" resultType="top.hcode.hoj.pojo.vo.ExamVO">
+        SELECT DISTINCT e.id, e.title, e.exam_repo_id, e.remark, e.start_time, e.end_time
+        FROM exam e
+        WHERE e.id = #{examId}
+    </select>
+
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hcode.hoj.mapper.ExamHistoryDetailMapper">
+
+    <select id="getHistoryDetails" resultType="top.hcode.hoj.pojo.entity.exam.ExamHistoryDetail">
+        SELECT * FROM exam_history_detail
+        WHERE history_id = #{historyId}
+    </select>
+</mapper>

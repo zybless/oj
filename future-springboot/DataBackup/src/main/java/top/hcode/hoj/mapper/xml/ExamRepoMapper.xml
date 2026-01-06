@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hcode.hoj.mapper.ExamRepoMapper">
+
+    <resultMap id="map_ExamRepoList" type="top.hcode.hoj.pojo.vo.ExamRepoVO">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="problem_count" property="problemCount"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+    <update id="addProblemToRepoBatch" parameterType="java.util.List">
+        UPDATE exam_repo
+        SET problem_count = problem_count + 1
+        WHERE id IN
+        <foreach collection="repoIds" item="repoId" open="(" separator="," close=")">
+            #{repoId}
+        </foreach>
+    </update>
+    <update id="removeProblemFromRepoBatch" parameterType="java.util.List">
+        UPDATE exam_repo
+        SET problem_count = problem_count - 1
+        WHERE id IN
+        <foreach collection="repoIds" item="repoId" open="(" separator="," close=")">
+            #{repoId}
+        </foreach>
+    </update>
+
+    <update id="addProblemsToRepoBatch">
+        UPDATE exam_repo
+        SET problem_count = problem_count + #{size}
+        WHERE id = #{repoId}
+    </update>
+
+    <update id="removeProblemsFromRepoBatch">
+        UPDATE exam_repo
+        SET problem_count = problem_count - #{size}
+        WHERE id = #{repoId}
+    </update>
+
+
+    <!-- 主查询 -->
+    <select id="getRepoList" resultMap="map_ExamRepoList" useCache="true">
+        SELECT DISTINCT er.id, er.title, er.problem_count, er.remark, er.author
+        FROM exam_repo er
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and er.title like concat('%',#{keyword},'%')
+            </if>
+            <if test="auth != null">
+                and er.auth = #{auth}
+            </if>
+        </where>
+    </select>
+
+</mapper>

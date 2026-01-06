@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hcode.hoj.mapper.ExamRepoProblemMapper">
+
+    <resultMap id="map_ExamRepoProblemList" type="top.hcode.hoj.pojo.entity.exam.ExamRepoProblem">
+        <id column="id" property="id"></id>
+        <result column="repo_id" property="repoId"></result>
+        <result column="problem_id" property="problemId"></result>
+    </resultMap>
+
+    <select id="getProblemRepoIds" resultType="java.lang.Long" parameterType="Long">
+        SELECT erp.repo_id
+        FROM exam_repo_problem erp
+        WHERE erp.problem_id = #{problemId}
+    </select>
+    <select id="getRepoProblemIds" resultType="java.lang.Long" parameterType="Long">
+        SELECT erp.problem_id
+        FROM exam_repo_problem erp
+        WHERE erp.repo_id = #{repoId}
+    </select>
+    <select id="getIdByRepoProblemId" resultType="java.lang.Long">
+        SELECT id
+        FROM exam_repo_problem
+        WHERE repo_id = #{repoId} AND problem_id = #{problemId}
+    </select>
+    <select id="getIdByRepoId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT id
+        FROM exam_repo_problem
+        WHERE repo_id = #{repoId}
+    </select>
+    <select id="getByRepoId" resultType="top.hcode.hoj.pojo.entity.exam.ExamRepoProblem">
+        SELECT *
+        FROM exam_repo_problem
+        WHERE repo_id = #{repoId}
+    </select>
+
+</mapper>

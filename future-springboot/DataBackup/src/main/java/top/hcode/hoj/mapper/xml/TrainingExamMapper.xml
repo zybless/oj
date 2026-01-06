@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hcode.hoj.mapper.TrainingExamMapper">
+
+    <select id="getTrainingExamCount" resultType="java.lang.Long">
+        select e.id
+        from training_exam te,
+             exam e
+        where te.tid = #{tid}
+          and te.eid = e.id
+    </select>
+
+
+    <resultMap id="map_TrainingExamProblemList" type="top.hcode.hoj.pojo.vo.ExamProblemVO">
+        <id column="pid" property="id"></id>
+        <result column="content" property="content"></result>
+        <result column="difficulty" property="difficulty"></result>
+        <result column="type" property="type"></result>
+        <result column="analysis" property="analysis"></result>
+    </resultMap>
+
+    <select id="getTrainingExamProblemList" resultMap="map_TrainingExamProblemList">
+        SELECT ep.id AS pid,
+               ep.content,
+               ep.difficulty,
+               ep.type,
+               ep.analysis
+                ,
+               (SELECT COUNT(*)
+                FROM judge j
+                WHERE j.cid = 0
+                  AND j.pid = p.id
+                  AND j.status = 0
+               )    as ac,
+               (SELECT COUNT(*)
+                FROM judge j
+                WHERE j.cid = 0
+                  AND j.pid = p.id
+               )    as total
+        FROM exam_problem ep,
+             training_problem tp
+        where p.id = tp.pid
+          and p.auth = 1
+          and tp.tid = #{tid}
+        order by tp.`rank` asc
+    </select>
+
+    <!-- 子查询 :为了防止分页总数据数出错-->
+    <select id="getProblemTag" resultType="top.hcode.hoj.pojo.entity.problem.Tag">
+        select t.*
+        from tag t,
+             problem_tag pt
+        where t.id = pt.tid
+          and pt.pid = #{pid}
+    </select>
+
+
+    <select id="getPrivateTrainingProblemListByPid" resultType="top.hcode.hoj.pojo.entity.training.TrainingProblem">
+        SELECT tp.*
+        from (
+                 select t.id
+                 FROM training_register tr,
+                      training t
+                 where tr.tid = t.id
+                   and t.auth = 'Private'
+                   and tr.uid = #{uid}
+             ) tm
+                 left join
+             training_problem tp
+             on tm.id = tp.tid
+        where tp.pid = #{pid}
+    </select>
+
+    <select id="getTrainingListAcceptedCountByUid" resultType="top.hcode.hoj.pojo.entity.training.TrainingProblem">
+        SELECT a.pid,a.tid
+        FROM
+        (
+        SELECT pid,tid FROM training_problem WHERE tid in
+        <foreach collection="tidList" item="tid" open="(" separator="," close=")">
+            #{tid}
+        </foreach>
+        ) a
+        left join
+        (
+        SELECT DISTINCT pid FROM user_acproblem where uid = #{uid}
+        ) b
+        on a.pid = b.pid
+        where b.pid is not null
+    </select>
+
+    <select id="getGroupTrainingListAcceptedCountByUid" resultType="top.hcode.hoj.pojo.entity.training.TrainingProblem">
+        SELECT a.pid,a.tid
+        FROM
+        (
+        SELECT pid,tid FROM training_problem WHERE tid in
+        <foreach collection="tidList" item="tid" open="(" separator="," close=")">
+            #{tid}
+        </foreach>
+        ) a
+        left join
+        (
+        SELECT DISTINCT pid FROM judge where gid = #{gid} and uid = #{uid} and status = 0
+        ) b
+        on a.pid = b.pid
+        where b.pid is not null
+    </select>
+
+
+    <select id="getTrainingFullScreenProblemList" resultType="top.hcode.hoj.pojo.vo.ProblemFullScreenListVO">
+        SELECT p.id AS pid,
+               p.problem_id,
+               p.title
+        FROM problem p,
+             training_problem tp
+        where p.id = tp.pid
+          and p.auth = 1
+          and tp.tid = #{tid}
+        order by tp.`rank` asc
+    </select>
+
+
+    <select id="getTrainingExamIdList" resultType="java.lang.Long">
+        select te.eid
+        from training_exam te
+        where te.tid = #{tid}
+    </select>
+
+</mapper>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th=http://www.thymeleaf.org>
+    <head>
+        <meta charset="UTF-8">
+        <title>[[${OJ_SHORT_NAME}]]用户注册验证码</title>
+    </head>
+    <body>
+        <div style="background: white;
+               width: 100%;      
+               max-width: 800px;      
+               margin: auto auto;      
+               border-radius: 5px;      
+               border:#1bc3fb 1px solid;      
+               overflow: hidden;      
+               -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);      
+               box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18);">
+            <header style="overflow: hidden;">
+                <center>
+                    <img style="width:100%;z-index: 666;"
+                         th:src="${EMAIL_BACKGROUND_IMG}">
+                </center>
+            </header>
+            <div style="padding: 5px 20px; ">
+                <p style=" position: relative;
+                 color: white;      
+                 float: left;      
+                 z-index: 999;      
+                 background: #1bc3fb;      
+                 padding: 5px 30px;      
+                 margin: -25px auto 0 ;      
+                 box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30) ">
+                    Dear New [[${OJ_SHORT_NAME}]]er
+                </p>
+                <br>
+                <center>
+                    <h3>
+                        来自 <span style=" text-decoration: none;color: #FF779A;" th:text="${OJ_SHORT_NAME}"></span> 邮件提醒
+                    </h3>
+                    <p style="text-indent:2em;">
+                        服务器硬盘空间不足。
+                    </p>
+                    <div style="background: #fafafa repeating-linear-gradient(-45deg,#fff,#fff 1.125rem,transparent 1.125rem,transparent 2.25rem);box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);margin:20px 0px;padding:15px;border-radius:5px;font-size:14px;color:#555555;text-align: center; ">
+                        服务器IP：<span style=" color: #FF779A;font-weight: bolder;font-size: 20px;" th:text="${serverIp}"></span><br>
+                        服务器名称：<span style=" color: #FF779A;font-weight: bolder;font-size: 20px;" th:text="${serverName}"></span><br>
+                        硬盘剩余大小：<span style=" color: #FF779A;font-weight: bolder;font-size: 20px;" th:text="${freeDisk}"></span>GB<br>
+                        硬盘总大小：<span style=" color: #FF779A;font-weight: bolder;font-size: 20px;" th:text="${totalDisk}"></span>GB<br>
+                        硬盘使用率：<span style=" color: #FF779A;font-weight: bolder;font-size: 20px;" th:text="${usagePercentage}"></span>%
+                    </div>
+                    &nbsp; &nbsp;
+
+                    <br>
+                    <div style=" text-align: center; ">
+                        <a style="text-transform: uppercase;
+                               text-decoration: none;      
+                               font-size: 14px;      
+                               background: #FF779A;      
+                               color: #FFFFFF;      
+                               padding: 10px;      
+                               display: inline-block;      
+                               border-radius: 5px;      
+                               margin: 10px auto 0;"
+                           target="_blank" th:href="${OJ_URL}" rel="noopener" th:text="${OJ_SHORT_NAME}+'｜传送门🚪'"></a>
+                    </div>
+                    <p style="font-size: 12px;text-align: center;color: #999; ">
+                        欢迎常来访问！<br>
+                        © 2022 <a style="text-decoration:none; color:#1bc3fb " th:href="${OJ_URL}" rel="noopener"
+                                  target="_blank" th:text="${OJ_NAME}"></a>
+                    </p>
+                    <p></p>
+                </center>
+            </div>
+        </div>
+    </body>
+</html>
