@@ -24,7 +24,8 @@ VueRouter.prototype.push = function push(location) {
 let routes = new Set([...ojRoutes, ...adminRoutes]);
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
+  base: '/',
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
