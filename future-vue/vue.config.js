@@ -5,116 +5,10 @@ const CompressionWebpackPlugin = require("compression-webpack-plugin"); // 开�
 const isProduction = process.env.NODE_ENV === "production";
 
 // 本地环境是否需要使用cdn
-const devNeedCdn = true;
-
-// cdn链接
-const cdn = {
-  // cdn：模块名称和模块作用域命名（对应window里面挂载的变量名称）
-  externals: {
-    vue: "Vue",
-    "vue-router": "VueRouter",
-    axios: "axios",
-    vuex: "Vuex",
-    "element-ui": "ELEMENT",
-    "highlight.js": "hljs",
-    moment: "moment",
-    "vue-echarts": "VueECharts",
-    echarts: "echarts",
-    katex: "katex",
-    "muse-ui": "MuseUI",
-    jquery: "$",
-    // 'vxe-table':'VXETable',
-    // "mavon-editor": "mavonEditor",
-  },
-  // cdn的css链接
-  css: [
-      "https://xsdoi.com/cdn/expire-1-M/element-ui/2.14.0/theme-chalk/index.min.css",
-      "https://xsdoi.com/cdn/expire-1-M/github-markdown-css/4.0.0/github-markdown.min.css",
-      "https://xsdoi.com/cdn/expire-1-M/KaTeX/0.12.0/katex.min.css",
-      "https://xsdoi.com/cdn/expire-1-M/muse-ui/3.0.2/muse-ui.min.css"
-  ],
-  // cdn的js链接
-  js: [
-      "https://xsdoi.com/cdn/expire-1-M/vue/2.6.11/vue.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/vue-router/3.2.0/vue-router.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/axios/0.26.0/axios.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/element-ui/2.15.3/index.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/highlight.js/10.3.2/highlight.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/moment.js/2.29.1/locale/zh-cn.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/moment.js/2.29.1/locale/en-gb.min.js",
-      "https://cdnjs.webstatic.cn/ajax/libs/moment.js/2.29.1/locale/ja.min.js",
-      "https://cdnjs.webstatic.cn/ajax/libs/moment.js/2.29.1/locale/ko.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/echarts/4.9.0-rc.1/echarts.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/vue-echarts/5.0.0-beta.0/vue-echarts.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/vuex/3.5.1/vuex.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/KaTeX/0.12.0/katex.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/KaTeX/0.12.0/contrib/auto-render.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/muse-ui/3.0.2/muse-ui.min.js",
-      "https://xsdoi.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js"
-  ]
-};
-
-// css: [
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/element-ui/2.14.0/theme-chalk/index.min.css",
-//       // "https://cdnjs.webstatic.cn/ajax/libs/element-ui/2.14.0/theme-chalk/index.min.css",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/github-markdown-css/4.0.0/github-markdown.min.css",
-//       // "https://cdnjs.webstatic.cn/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.12.0/katex.min.css",
-//       // "https://cdnjs.webstatic.cn/ajax/libs/KaTeX/0.12.0/katex.min.css",
-//       // 'https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/muse-ui/3.0.2/muse-ui.min.css',
-//       // "https://cdnjs.webstatic.cn/ajax/libs/muse-ui/3.0.2/muse-ui.min.css"
-//       // "https://unpkg.com/vxe-table@2.9.26/lib/style.min.css",
-//       // "https://cdn.jsdelivr.net/npm/vxe-table@2.9.26/lib/style.min.css",
-//       "https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.14.0/theme-chalk/index.min.css",
-//       "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css",
-//       "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css",
-//       "https://cdnjs.cloudflare.com/ajax/libs/muse-ui/3.0.2/muse-ui.min.css"
-//   ],
-//   // cdn的js链接
-//   js: [
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.11/vue.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-router/3.2.0/Fvue-router.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.2.0/vue-router.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js",
-//       // "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/element-ui/2.15.3/index.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.15.3/index.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/10.3.2/highlight.min.js,
-//       "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/highlight.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/locale/zh-cn.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/zh-cn.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/locale/en-gb.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/en-gb.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ja.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/echarts/4.9.0-rc.1/echarts.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/echarts/4.9.0-rc.1/echarts.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-echarts/5.0.0-beta.0/vue-echarts.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/vue-echarts/5.0.0-beta.0/vue-echarts.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vuex/3.5.1/vuex.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js",
-//       // "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.12.0/katex.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js",
-//       // "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.12.0/contrib/auto-render.min.js",
-//       "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js",
-//       // 'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/muse-ui/3.0.2/muse-ui.min.js',
-//       "https://cdnjs.cloudflare.com/ajax/libs/muse-ui/3.0.2/muse-ui.min.js",
-//       // 'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js',
-//       "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-//       // "https://unpkg.com/xe-utils@3.4.3/dist/xe-utils.umd.min.js",
-//       // "https://unpkg.com/vxe-table@2.9.26/lib/index.umd.min.js",
-//       // "https://cdn.jsdelivr.net/npm/xe-utils@3.4.3/dist/xe-utils.umd.min.js",
-//       // "https://cdn.jsdelivr.net/npm/vxe-table@2.9.26/lib/index.umd.min.js"
-//       // "https://unpkg.com/mavon-editor@2.9.1/dist/mavon-editor.js"
-//   ]
-// };
+const devNeedCdn = false;
 
 module.exports = {
-  publicPath: "/",
+  publicPath: isProduction ? "https://static.oicourse.com/project-v2/" : "/",
   assetsDir: "assets",
   devServer: {
     open: true, // npm run serve后自动打开页面
@@ -123,8 +17,8 @@ module.exports = {
     proxy: {
       "/api": {
         //   以'/api'开头的请求会被代理进行转发
-        // target: "http://49.234.155.58:6688", //   要发向的后台服务器地址  如果后台服务跑在后台开发人员的机器上，就写成 `http://ip:port` 如 `http:192.168.12.213:8081`   ip为后台服务器的ip
-        target: "http://localhost:6688", //   要发向的后台服务器地址  如果后台服务跑在后台开发人员的机器上，就写成 `http://ip:port` 如 `http:192.168.12.213:8081`   ip为后台服务器的ip
+        target: "http://49.234.155.58:6688", 
+        // target: "http://localhost:6688", 
         changeOrigin: true,
       },
     },
@@ -134,23 +28,17 @@ module.exports = {
   productionSourceMap: false,
 
   chainWebpack: (config) => {
-    // ============注入cdn start============
-    config.plugin("html").tap((args) => {
-      // 生产环境或本地需要cdn时，才注入cdn
-      if (isProduction || devNeedCdn) args[0].cdn = cdn;
-      return args;
-    });
-    config
-      .plugin("webpack-bundle-analyzer") // 查看打包文件体积大小
-      .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin);
-    // ============注入cdn end============
+    // 只有在生产环境才开启分析器，不然本地开发每次都弹网页很烦
+    if (isProduction) {
+      config
+        .plugin("webpack-bundle-analyzer")
+        .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin);
+    }
   },
   configureWebpack: (config) => {
-    // 用cdn方式引入，则构建时要忽略相关资源
-    const plugins = [];
-    if (isProduction || devNeedCdn) {
-      config.externals = cdn.externals;
+    if (isProduction) {
       config.mode = "production";
+
       config["performance"] = {
         //打包文件大小配置
         maxEntrypointSize: 10000000,

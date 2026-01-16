@@ -4,7 +4,7 @@ import store from './store'
 import Element from 'element-ui'
 import i18n from '@/i18n'
 
-// import "element-ui/lib/theme-chalk/index.css"
+import "element-ui/lib/theme-chalk/index.css"
 import 'font-awesome/css/font-awesome.min.css'
 import Message from 'vue-m-message'
 import 'vue-m-message/dist/index.css'
@@ -40,6 +40,7 @@ import VueCropper from 'vue-cropper'
 // Vue.component('ECharts', ECharts)
 
 // 使用CDN的方式如下引入echarts
+import 'echarts'; // 这一行极其重要，它会加载整个 echarts 核心库
 import VueECharts from 'vue-echarts';
 Vue.component('ECharts', VueECharts)
 
@@ -52,7 +53,7 @@ import mavonEditor from 'mavon-editor'  //引入markdown编辑器
 import 'mavon-editor/dist/css/index.css';
 Vue.use(mavonEditor)
 
-// import 'muse-ui/dist/muse-ui.css';
+import 'muse-ui/dist/muse-ui.css';
 import MuseUI from 'muse-ui'
 Vue.use(MuseUI)
 
