@@ -1,14 +1,15 @@
 # nacos配置
-nacos-url: ${NACOS_URL:49.234.155.58:8848}
-#nacos-url: ${NACOS_URL:172.17.0.15:8848}
+#nacos-url: ${NACOS_URL:49.234.155.58:8848}
+nacos-url: ${NACOS_URL:124.220.20.70:8848}
 nacos-username: ${NACOS_USERNAME:nacos}
-nacos-password: ${NACOS_PASSWORD:XxmfnNacos#}
+#nacos-password: ${NACOS_PASSWORD:XxmfnNacos#}
+nacos-password: ${NACOS_PASSWORD:xsdoi@789nacos}
 nacos-switch-config: hoj-switch.yml
 nacos-web-config: hoj-web.yml
 
 spring:
   profiles:
-    active: dev
+    active: prod
   application:
     name: hoj-data-backup # 注册中心名字，日志、监控、Feign等都会调用
   cloud:
