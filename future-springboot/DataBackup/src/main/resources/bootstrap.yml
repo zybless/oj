@@ -9,7 +9,7 @@ nacos-web-config: hoj-web.yml
 
 spring:
   profiles:
-    active: prod
+    active: dev
   application:
     name: hoj-data-backup # 注册中心名字，日志、监控、Feign等都会调用
   cloud:

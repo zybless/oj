@@ -1,16 +1,16 @@
 # redis配置
-redis-host: 49.234.155.58
-redis-port: 6380
-redis-password: XxmfnRedis123!
+redis-host: 124.220.20.70
+redis-port: 6379
+redis-password: xsdoi@789redis
 
 # 本服务连接mysql的地址和端口号
-mysql-host: 49.234.155.58
-mysql-port: 3307
+mysql-host: 124.220.20.70
+mysql-port: 3306
 # mysql的公网地址和端口号
-mysql-public-host: 49.234.155.58
-mysql-public-port: 3307
+mysql-public-host: 124.220.20.70
+mysql-public-port: 3306
 mysql-username: root
-mysql-password: XxmfnMysql123!
+mysql-password: xsdou@789mysql
 mysql-name: hoj
 
 # token密钥，default表示随机生成
