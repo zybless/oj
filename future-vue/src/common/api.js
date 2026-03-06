@@ -271,6 +271,12 @@ const ojApi = {
       data,
     });
   },
+  // 验证密码是否正确
+  verifyPassword(password) {
+    return ajax("/api/verify-password", "post", {
+      data: { password },
+    });
+  },
   // Problem List页的相关请求
   getProblemTagList(oj) {
     return ajax("/api/get-all-problem-tags", "get", {
