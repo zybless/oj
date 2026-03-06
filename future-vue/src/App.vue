@@ -12,7 +12,7 @@
               v-if="!isAuthenticated"
               class="btn-menu"
             >
-              <el-button @click="toLive" size="small" style="margin-right: 10px;">课程直播频道</el-button>
+              <!-- <el-button @click="toLive" size="small" style="margin-right: 10px;">课程直播频道</el-button> -->
               <el-button
                 type="primary"
                 size="medium"
@@ -30,7 +30,7 @@
               </el-button>
             </div>
             <div class="btn-menu" v-else>
-              <el-button @click="toLive" size="small" style="margin-right: 10px;">课程直播频道</el-button>
+              <!-- <el-button @click="toLive" size="small" style="margin-right: 10px;">课程直播频道</el-button> -->
               <!-- <el-link type="primary" class="scratch" :underline="false" @click="jumpToScratch">
                 scratch
               </el-link> -->
@@ -193,7 +193,7 @@
                     >
                       12个月
                     </h2>
-                    <h3 style="font-size: 26px;margin: 0 0 5px;">399<span style="font-size: 14px;font-weight: 700;">元</span></span></h3>
+                    <h3 style="font-size: 26px;margin: 0 0 5px;">399<span style="font-size: 14px;font-weight: 700;">元</span></h3>
                   </div>
                   <div style="display: flex;margin: 20px 0 ;">
                     <span style="line-height: 34px;">选择支付方式：</span>
@@ -217,6 +217,11 @@
                 :href="'https://beian.miit.gov.cn/'"
                 target="_blank"
               >苏ICP备 2024129332号</a>
+              <!-- <a
+                style="color:#1E9FFF"
+                :href="'https://beian.miit.gov.cn/'"
+                target="_blank"
+              >浙ICP备2024088393号-1</a> -->
             </div>
           </footer>
         </div>
