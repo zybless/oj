@@ -47,7 +47,7 @@
           </el-col>
         </el-row>
 
-        <section>
+        <!-- <section>
           <b class="problem-filter">{{ $t("m.Problem_Bank") }}</b>
           <div>
             <el-tag
@@ -76,7 +76,7 @@
               >{{ remoteOj.name }}</el-tag
             >
           </div>
-        </section>
+        </section> -->
 
         <section>
           <b class="problem-filter">{{ $t("m.Level") }}</b>

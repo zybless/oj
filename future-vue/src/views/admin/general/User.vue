@@ -580,6 +580,19 @@
         <el-button type="primary" @click="addVip">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="请输入管理员密码确认操作" :visible.sync="showPwdDialog" width="300px">
+      <el-input
+        v-model="verifyPwd"
+        type="password"
+        placeholder="请输入密码"
+        @keyup.enter.native="confirmWithPassword"
+      ></el-input>
+      <span slot="footer">
+        <el-button @click="showPwdDialog = false">取 消</el-button>
+        <el-button type="primary" :loading="verifyLoading" @click="confirmWithPassword">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -644,6 +657,12 @@ export default {
       );
     };
     return {
+      // 密码验证弹窗
+      showPwdDialog: false,
+      verifyPwd: '',
+      verifyLoading: false,
+      pendingAction: null, // 存储待执行的操作
+
       // 一页显示的用户数
       pageSize: 10,
       // 用户总数
@@ -757,6 +776,35 @@ export default {
     this.getUserList(1);
   },
   methods: {
+    // 弹出密码验证框，action是验证成功后要执行的函数
+    requirePassword(action) {
+      this.verifyPwd = '';
+      this.pendingAction = action;
+      this.showPwdDialog = true;
+    },
+    confirmWithPassword() {
+      if (!this.verifyPwd) {
+        this.$message.error('请输入密码');
+        return;
+      }
+      this.verifyLoading = true;
+      api.verifyPassword(this.verifyPwd).then(
+        (res) => {
+          this.verifyLoading = false;
+          if (res.data.data.success) {
+            this.showPwdDialog = false;
+            this.pendingAction && this.pendingAction();
+          } else {
+            this.$message.error('密码错误，操作取消');
+          }
+        },
+        () => {
+          this.verifyLoading = false;
+          this.$message.error('验证失败，请重试');
+        }
+      );
+    },
+
     editVip(option, uuid) {
       if (option === "remove") {
         this.$confirm("你确定取消该用户的vip权限吗", "Tips", {
@@ -764,15 +812,23 @@ export default {
           cancelButtonText: this.$i18n.t("m.Cancel"),
           type: "warning",
         }).then(() => {
-          removeVip(uuid).then((res) => {
-            // myMessage.success("操作成功");
-            this.$message({
-              message: "操作成功",
-              type: "success",
+          this.requirePassword(() => {
+            removeVip(uuid).then(() => {
+              this.$message({ message: '操作成功', type: 'success' });
+              this.filterByKeyword();
             });
-            this.filterByKeyword();
           });
-        });
+        })
+        // .then(() => {
+        //   removeVip(uuid).then((res) => {
+        //     // myMessage.success("操作成功");
+        //     this.$message({
+        //       message: "操作成功",
+        //       type: "success",
+        //     });
+        //     this.filterByKeyword();
+        //   });
+        // });
       } else if (option === "add") {
         this.uuid = uuid;
         this.vipDdl = "";
@@ -781,21 +837,34 @@ export default {
     },
     addVip() {
       if (!this.vipDdl) {
-        this.$message({
-          message: "请选择日期",
-          type: "error",
-        });
+        this.$message({ message: '请选择日期', type: 'error' });
         return;
       }
-      addVip(this.uuid, this.vipDdl).then((res) => {
-        this.$message({
-          message: "操作成功",
-          type: "success",
+      this.dialogVisible = false;
+      this.requirePassword(() => {
+        addVip(this.uuid, this.vipDdl).then(() => {
+          this.$message({ message: '操作成功', type: 'success' });
+          this.filterByKeyword();
         });
-        this.dialogVisible = false;
-        this.filterByKeyword();
       });
     },
+    // addVip() {
+    //   if (!this.vipDdl) {
+    //     this.$message({
+    //       message: "请选择日期",
+    //       type: "error",
+    //     });
+    //     return;
+    //   }
+    //   addVip(this.uuid, this.vipDdl).then((res) => {
+    //     this.$message({
+    //       message: "操作成功",
+    //       type: "success",
+    //     });
+    //     this.dialogVisible = false;
+    //     this.filterByKeyword();
+    //   });
+    // },
     // 切换页码回调
     currentChange(page) {
       this.currentPage = page;
@@ -806,20 +875,33 @@ export default {
       this.getUserList(this.currentPage);
     },
     // 提交修改用户的信息
+    // saveUser() {
+    //   this.$refs["updateUser"].validate((valid) => {
+    //     if (valid) {
+    //       api
+    //         .admin_editUser(this.selectUser)
+    //         .then((res) => {
+    //           // 更新列表
+    //           myMessage.success(this.$i18n.t("m.Update_Successfully"));
+    //           this.getUserList(this.currentPage);
+    //         })
+    //         .then(() => {
+    //           this.showUserDialog = false;
+    //         })
+    //         .catch(() => {});
+    //     }
+    //   });
+    // },
     saveUser() {
-      this.$refs["updateUser"].validate((valid) => {
+      this.$refs['updateUser'].validate((valid) => {
         if (valid) {
-          api
-            .admin_editUser(this.selectUser)
-            .then((res) => {
-              // 更新列表
-              myMessage.success(this.$i18n.t("m.Update_Successfully"));
+          this.showUserDialog = false;
+          this.requirePassword(() => {
+            api.admin_editUser(this.selectUser).then((res) => {
+              myMessage.success(this.$i18n.t('m.Update_Successfully'));
               this.getUserList(this.currentPage);
-            })
-            .then(() => {
-              this.showUserDialog = false;
-            })
-            .catch(() => {});
+            });
+          });
         }
       });
     },
@@ -872,22 +954,34 @@ export default {
           confirmButtonText: this.$i18n.t("m.OK"),
           cancelButtonText: this.$i18n.t("m.Cancel"),
           type: "warning",
-        }).then(
-          () => {
-            api
-              .admin_deleteUsers(ids)
-              .then((res) => {
-                myMessage.success(this.$i18n.$t("m.Delete_successfully"));
-                this.selectedUsers = [];
-                this.getUserList(this.currentPage);
-              })
-              .catch(() => {
-                this.selectedUsers = [];
-                this.getUserList(this.currentPage);
-              });
-          },
-          () => {}
-        );
+        }).then(() => {
+          this.requirePassword(() => {
+            api.admin_deleteUsers(ids).then((res) => {
+              myMessage.success(this.$i18n.$t('m.Delete_successfully'));
+              this.selectedUsers = [];
+              this.getUserList(this.currentPage);
+            }).catch(() => {
+              this.selectedUsers = [];
+              this.getUserList(this.currentPage);
+            });
+          });
+        }, () => {});
+        // .then(
+        //   () => {
+        //     api
+        //       .admin_deleteUsers(ids)
+        //       .then((res) => {
+        //         myMessage.success(this.$i18n.$t("m.Delete_successfully"));
+        //         this.selectedUsers = [];
+        //         this.getUserList(this.currentPage);
+        //       })
+        //       .catch(() => {
+        //         this.selectedUsers = [];
+        //         this.getUserList(this.currentPage);
+        //       });
+        //   },
+        //   () => {}
+        // );
       } else {
         myMessage.warning(
           this.$i18n.t("m.The_number_of_users_selected_cannot_be_empty")

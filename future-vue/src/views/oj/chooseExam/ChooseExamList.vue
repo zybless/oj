@@ -6,7 +6,7 @@
             <el-card shadow>
               <div slot="header">
                 <span class="panel-title"
-                  >苏州工业园区信奥拔尖人才培养计划—2024年CSP- J/S NOIP</span
+                  >新赛道信奥拔尖人才培养计划</span
                 >
               </div>
               <div v-loading="loading">

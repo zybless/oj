@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-card shadow>
-      <!-- <div slot="header">
+      <div slot="header">
         <span class="panel-title">课程清单</span>
-      </div> -->
+      </div>
       <div class="filter-row">
         <span class="name">
           课程类型

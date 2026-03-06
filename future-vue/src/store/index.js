@@ -17,8 +17,8 @@ const rootState = {
   },
   websiteConfig:{
     recordName:'© 2020-2022',
-    projectName:'蔚来新赛道',
-    shortName:'蔚来新赛道',
+    projectName:'新赛道',
+    shortName:'新赛道OI',
     recordUrl:'#',
     projectUrl:'#',
     openPublicDiscussion: true,
