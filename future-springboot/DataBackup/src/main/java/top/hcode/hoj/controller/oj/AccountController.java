@@ -112,4 +112,14 @@ public class AccountController {
         return accountService.getUserAuthInfo();
     }
 
+    /**
+     * @param passwordVerifyDto 密码验证DTO
+     * @return 密码验证结果视图对象
+     */
+    @PostMapping("/verify-password")
+    @RequiresAuthentication
+    public CommonResult<PasswordVerifyVO> verifyPassword(@RequestBody PasswordVerifyDTO passwordVerifyDto) {
+        return accountService.verifyPassword(passwordVerifyDto);
+    }
+
 }

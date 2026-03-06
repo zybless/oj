@@ -9,6 +9,7 @@ import top.hcode.hoj.manager.oj.AccountManager;
 import top.hcode.hoj.pojo.dto.ChangeEmailDTO;
 import top.hcode.hoj.pojo.dto.ChangePasswordDTO;
 import top.hcode.hoj.pojo.dto.CheckUsernameOrEmailDTO;
+import top.hcode.hoj.pojo.dto.PasswordVerifyDTO;
 import top.hcode.hoj.pojo.vo.*;
 import top.hcode.hoj.service.oj.AccountService;
 
@@ -92,5 +93,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public CommonResult<UserAuthInfoVO> getUserAuthInfo() {
         return CommonResult.successResponse(accountManager.getUserAuthInfo());
+    }
+
+    @Override
+    public CommonResult<PasswordVerifyVO> verifyPassword(PasswordVerifyDTO passwordVerifyDto) {
+        try {
+            return CommonResult.successResponse(accountManager.verifyPassword(passwordVerifyDto));
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
+        }
     }
 }

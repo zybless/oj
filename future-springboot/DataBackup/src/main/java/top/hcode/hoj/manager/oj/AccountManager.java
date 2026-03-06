@@ -20,6 +20,7 @@ import top.hcode.hoj.manager.email.EmailManager;
 import top.hcode.hoj.pojo.dto.ChangeEmailDTO;
 import top.hcode.hoj.pojo.dto.ChangePasswordDTO;
 import top.hcode.hoj.pojo.dto.CheckUsernameOrEmailDTO;
+import top.hcode.hoj.pojo.dto.PasswordVerifyDTO;
 import top.hcode.hoj.pojo.entity.judge.Judge;
 import top.hcode.hoj.pojo.entity.problem.Problem;
 import top.hcode.hoj.pojo.entity.user.Role;
@@ -515,6 +516,28 @@ public class AccountManager {
         UserAuthInfoVO authInfoVO = new UserAuthInfoVO();
         authInfoVO.setRoles(roles.stream().map(Role::getRole).collect(Collectors.toList()));
         return authInfoVO;
+    }
+
+    public PasswordVerifyVO verifyPassword(PasswordVerifyDTO passwordVerifyDto) throws StatusFailException {
+        String password = passwordVerifyDto.getPassword();
+        
+        if (StringUtils.isEmpty(password)) {
+            return new PasswordVerifyVO(false, "密码不能为空");
+        }
+        
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        
+        QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
+        userInfoQueryWrapper.select("uuid", "password")
+                .eq("uuid", userRolesVo.getUid());
+        UserInfo userInfo = userInfoEntityService.getOne(userInfoQueryWrapper, false);
+        // 与当前登录用户的密码进行比较判断
+        if (userInfo.getPassword().equals(SecureUtil.md5(password))) {
+            return new PasswordVerifyVO(true, "密码验证成功");
+        } else {
+            return new PasswordVerifyVO(false, "密码错误");
+        }
     }
 
 }

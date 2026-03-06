@@ -4,6 +4,7 @@ import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.pojo.dto.ChangeEmailDTO;
 import top.hcode.hoj.pojo.dto.ChangePasswordDTO;
 import top.hcode.hoj.pojo.dto.CheckUsernameOrEmailDTO;
+import top.hcode.hoj.pojo.dto.PasswordVerifyDTO;
 import top.hcode.hoj.pojo.vo.*;
 
 
@@ -24,4 +25,11 @@ public interface AccountService {
     public CommonResult<UserInfoVO> changeUserInfo(UserInfoVO userInfoVo);
 
     public CommonResult<UserAuthInfoVO> getUserAuthInfo();
+
+    /**
+     *
+     * @param passwordVerifyDto 密码验证DTO
+     * @return 密码验证结果视图对象
+     */
+    public CommonResult<PasswordVerifyVO> verifyPassword(PasswordVerifyDTO passwordVerifyDto);
 }
