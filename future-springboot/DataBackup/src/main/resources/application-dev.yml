@@ -10,7 +10,7 @@ mysql-port: 3306
 mysql-public-host: 124.220.20.70
 mysql-public-port: 3306
 mysql-username: root
-mysql-password: xsdou@789mysql
+mysql-password: xsdoi@789mysql
 mysql-name: hoj
 
 # token密钥，default表示随机生成
