@@ -314,7 +314,8 @@
           :label="$t('m.Test_Result')"
           name="result"
         >
-          <div v-loading="testJudgeLoding">
+          <!-- <div v-loading="testJudgeLoding"> -->
+          <div v-loading="testJudgeLoding" style="max-height: 200px; overflow-y: auto; padding-right: 8px;">
             <template v-if="testJudgeRes.status == -10">
               <div class="tj-res-tab mt-10">
                 <el-alert
