@@ -710,6 +710,8 @@ export default {
         this.getUnreadMsgCount();
       }, 120 * 1000);
     }
+    // 新增
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
   },
   beforeUpdate() {
     let showGif = this.getCookie("yhFlag");
@@ -725,6 +727,8 @@ export default {
 
   beforeDestroy() {
     clearInterval(this.msgTimer);
+    // 新增
+    document.removeEventListener("visibilitychange", this.handleVisibilityChange);
   },
   data() {
     return {
@@ -799,6 +803,23 @@ export default {
         window.open("/admin/");
       }
     },
+    // 新增
+    startMsgTimer() {
+      this.msgTimer = setInterval(() => {
+        this.getUnreadMsgCount();
+      }, 120 * 1000);
+    },
+
+    // 新增
+    handleVisibilityChange() {
+      if (document.hidden) {
+        clearInterval(this.msgTimer);
+      } else {
+        this.getUnreadMsgCount();
+        clearInterval(this.msgTimer);
+        this.startMsgTimer();
+      }
+    },
     getUnreadMsgCount() {
       api.getUnreadMsgCount().then((res) => {
         let data = res.data.data;
@@ -832,7 +853,7 @@ export default {
             });
           }
         }
-      });
+      }).catch(() => {});
     },
     changeWebLanguage() {
       this.$store.commit("changeWebLanguage", {
@@ -927,9 +948,10 @@ export default {
           clearInterval(this.msgTimer);
         }
         this.getUnreadMsgCount();
-        this.msgTimer = setInterval(() => {
-          this.getUnreadMsgCount();
-        }, 120 * 1000);
+        // this.msgTimer = setInterval(() => {
+        //   this.getUnreadMsgCount();
+        // }, 120 * 1000);
+        this.startMsgTimer();
       } else {
         clearInterval(this.msgTimer);
       }
