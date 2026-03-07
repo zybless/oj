@@ -23,7 +23,7 @@ jwt-token-fresh-expire: 43200
 # 网站是否开启远程评测
 open-remote-judge: true
 # 调用评测服务的token, default表示随机生成
-judge-token: e3f55f0debb64f9cadca5aa655ff7f04
+judge-token: 74892fc324854e99830e99f56e28dc4b
 
 # 邮箱服务地址
 email-host: smtp.163.com
