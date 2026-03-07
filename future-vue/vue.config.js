@@ -9,9 +9,10 @@ const devNeedCdn = false;
 
 module.exports = {
   // publicPath: isProduction ? "https://static.oicourse.com/project-v2/" : "/",
-  publicPath: isProduction ? "https://static.xsdoi.com/" : "/",
+  // publicPath: isProduction ? "https://static.xsdoi.com/" : "/",
   // publicPath: "https://static.oicourse.com/project-v2/",
-  // publicPath: "https://static.xsdoi.com/",
+  publicPath: "https://static.xsdoi.com/",
+  // publicPath: "/",
   assetsDir: "assets",
   devServer: {
     open: true, // npm run serve后自动打开页面
