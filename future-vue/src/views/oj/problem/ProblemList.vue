@@ -197,14 +197,14 @@
         <vxe-table-column
           field="problemId"
           :title="$t('m.Problem_ID')"
-          width="150"
+          min-width="80"
           show-overflow
         ></vxe-table-column>
 
         <vxe-table-column
           field="title"
           :title="$t('m.Problem')"
-          min-width="150"
+          min-width="200"
           show-overflow
         >
           <template v-slot="{ row }">
@@ -227,7 +227,7 @@
             >
           </template>
         </vxe-table-column>
-        <vxe-table-column field="tag" :title="$t('m.Tags')" min-width="230">
+        <vxe-table-column field="tag" :title="$t('m.Tags')" min-width="180">
           <template v-slot="{ row }">
             <span
               class="el-tag el-tag--small"
