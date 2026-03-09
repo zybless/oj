@@ -60,15 +60,20 @@ public class JudgeEntityServiceImpl extends ServiceImpl<JudgeMapper, Judge> impl
                                              Long gid) {
         //新建分页
         Page<JudgeVO> page = new Page<>(currentPage, limit);
+//        page.setSearchCount(false); // 关闭count查询
 
+//        long t1 = System.currentTimeMillis();
         IPage<JudgeVO> commonJudgeList = judgeMapper.getCommonJudgeList(page, searchPid, status, username, uid, completeProblemID, gid);
+//        System.out.println(">>> 判题列表SQL耗时: " + (System.currentTimeMillis() - t1) + "ms");
         List<JudgeVO> records = commonJudgeList.getRecords();
         if (!CollectionUtils.isEmpty(records)) {
             List<Long> pidList = records.stream().map(JudgeVO::getPid).collect(Collectors.toList());
             QueryWrapper<Problem> problemQueryWrapper = new QueryWrapper<>();
             problemQueryWrapper.select("id", "title")
                     .in("id", pidList);
+//            long t2 = System.currentTimeMillis();
             List<Problem> problemList = problemMapper.selectList(problemQueryWrapper);
+//            System.out.println(">>> 查题目标题SQL耗时: " + (System.currentTimeMillis() - t2) + "ms");
             HashMap<Long, String> storeMap = new HashMap<>(limit);
             for (JudgeVO judgeVo : records) {
                 judgeVo.setTitle(getProblemTitleByPid(judgeVo.getPid(), problemList, storeMap));

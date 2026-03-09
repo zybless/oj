@@ -4,7 +4,7 @@
     <select id="getCommonJudgeList" resultType="top.hcode.hoj.pojo.vo.JudgeVO" useCache="true">
         select j.submit_id,j.submit_time,j.display_pid,j.username,j.uid,j.pid,j.status,j.share,
             j.time,j.memory,j.score,j.oi_rank_score,j.length,j.language,j.cid,j.cpid,j.judger,j.is_manual
-            from judge j
+            from judge j FORCE INDEX(idx_judge_list)
             <where>
                 j.cid = 0 AND j.cpid = 0
                 <if test="username!='' and username!=null">
