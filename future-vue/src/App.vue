@@ -212,16 +212,16 @@
           </div>
           <footer class="fix-to-bottom">
             <div class="mundb-footer">
-              <!-- <a
-                style="color:#1E9FFF"
-                :href="'https://beian.miit.gov.cn/'"
-                target="_blank"
-              >苏ICP备 2024129332号</a> -->
               <a
                 style="color:#1E9FFF"
                 :href="'https://beian.miit.gov.cn/'"
                 target="_blank"
-              >浙ICP备2024088393号-1</a>
+              >苏ICP备 2024129332号</a>
+              <!-- <a
+                style="color:#1E9FFF"
+                :href="'https://beian.miit.gov.cn/'"
+                target="_blank"
+              >浙ICP备2024088393号-1</a> -->
             </div>
           </footer>
         </div>
