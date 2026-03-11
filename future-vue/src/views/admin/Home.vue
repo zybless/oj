@@ -66,10 +66,10 @@
           $t("m.Common_Problem_Admin")
         }}</el-menu-item>
         <el-menu-item index="/admin/question_banks">
-          考试试卷管理
+          {{ $t("m.Test_Paper_Admin") }}
         </el-menu-item>
         <el-menu-item index="/admin/choose_exams">
-          选拔赛试卷管理
+          {{ $t("m.Preliminary_Competition") }}
         </el-menu-item>
         <el-menu-item v-if="isAdmin" index="/admin/courses">
           课程管理

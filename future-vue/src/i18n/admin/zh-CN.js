@@ -35,9 +35,18 @@ export const m = {
   Home_Page: "主页",
   Logout: "退出登录",
   Log_Out_Successfully: "退出登录成功",
-  Common_Problem_Admin: "考试题目管理",
-  Common_Problem_List: "考试题目列表",
-  Create_Common_Problem: "添加考试题目",
+  // Common_Problem_Admin: "考试题目管理",
+  // Common_Problem_List: "考试题目列表",
+  // Create_Common_Problem: "添加考试题目",
+  Common_Problem_Admin: "初赛题目",
+  Common_Problem_List: "初赛题目列表",
+  Create_Common_Problem: "添加初赛题目",
+
+  Test_Paper_Admin: "初赛试卷",
+  Question_Bank_List: "初赛试卷列表",
+
+  Preliminary_Competition: "初赛比赛",
+  Choose_exam_List:"初赛比赛列表",
 
   // /views/admin/Dashboard.vue
   Last_Login: "最近登录",
@@ -497,10 +506,8 @@ export const m = {
   Analysis: "解析",
 
   Add_Options: "添加选项",
-  Question_Bank_List: "考试试卷列表",
   Order: "订单",
   Course_List:'课程列表',
   Training_Exam_List: '题单试卷列表',
   System_Honor: "光荣榜设置",
-  Choose_exam_List:"选拔赛试卷列表"
 };
