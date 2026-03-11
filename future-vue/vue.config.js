@@ -9,9 +9,9 @@ const devNeedCdn = false;
 
 module.exports = {
   // publicPath: isProduction ? "https://static.oicourse.com/project-v2/" : "/",
-  // publicPath: isProduction ? "https://static.xsdoi.com/" : "/",
+  publicPath: isProduction ? "https://static.xsdoi.com/" : "/",
   // publicPath: "https://static.oicourse.com/project-v2/",
-  publicPath: "https://static.xsdoi.com/",
+  // publicPath: "https://static.xsdoi.com/",
   // publicPath: "/",
   assetsDir: "assets",
   devServer: {
@@ -22,8 +22,8 @@ module.exports = {
       "/api": {
         //   以'/api'开头的请求会被代理进行转发
         // target: "http://49.234.155.58:6688", 
-        // target: "http://124.220.20.70:6688",
-        target: "http://localhost:6688",
+        target: "http://124.220.20.70:6688",
+        // target: "http://localhost:6688",
         changeOrigin: true,
       },
     },
