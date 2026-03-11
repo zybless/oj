@@ -1,15 +1,19 @@
 package top.hcode.hoj.manager.admin.training;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
 import top.hcode.hoj.common.exception.StatusFailException;
 import top.hcode.hoj.dao.training.TrainingCategoryEntityService;
+import top.hcode.hoj.pojo.dto.trainingCategory.CategoryRankDTO;
 import top.hcode.hoj.pojo.entity.training.TrainingCategory;
 import top.hcode.hoj.shiro.AccountProfile;
+import top.hcode.hoj.utils.LexoRankUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Himit_ZH
@@ -57,6 +61,44 @@ public class AdminTrainingCategoryManager {
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
         log.info("[{}],[{}],categoryId:[{}],operatorUid:[{}],operatorUsername:[{}]",
                 "Admin_Training", "Delete_Category", cid, userRolesVo.getUid(), userRolesVo.getUsername());
+    }
+
+    public void updateCategoryRank(CategoryRankDTO rankDTO) throws StatusFailException {
+        // 查拖拽项
+        TrainingCategory dragItem = trainingCategoryEntityService.getById(rankDTO.getDragId());
+        if (dragItem == null) {
+            throw new StatusFailException("分类不存在");
+        }
+
+        // 查前后邻居的 rank 值
+        String prevRank = null;
+        String nextRank = null;
+
+        if (rankDTO.getPrevId() != null) {
+            TrainingCategory prev = trainingCategoryEntityService.getById(rankDTO.getPrevId());
+            if (prev == null) throw new StatusFailException("前置分类不存在");
+            prevRank = prev.getRank();
+        }
+
+        if (rankDTO.getNextId() != null) {
+            TrainingCategory next = trainingCategoryEntityService.getById(rankDTO.getNextId());
+            if (next == null) throw new StatusFailException("后置分类不存在");
+            nextRank = next.getRank();
+        }
+
+        // 计算新 rank
+        String newRank = LexoRankUtils.between(prevRank, nextRank);
+
+        // 只更新一条记录
+        boolean isOk = trainingCategoryEntityService.update(
+                new LambdaUpdateWrapper<TrainingCategory>()
+                        .eq(TrainingCategory::getId, rankDTO.getDragId())
+                        .set(TrainingCategory::getRank, newRank)
+        );
+
+        if (!isOk) {
+            throw new StatusFailException("排序更新失败");
+        }
     }
 
 

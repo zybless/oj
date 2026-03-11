@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 import top.hcode.hoj.common.exception.StatusFailException;
 import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.manager.admin.training.AdminTrainingCategoryManager;
+import top.hcode.hoj.pojo.dto.trainingCategory.CategoryRankDTO;
 import top.hcode.hoj.pojo.entity.training.TrainingCategory;
 import top.hcode.hoj.service.admin.training.AdminTrainingCategoryService;
+
+import java.util.List;
 
 /**
  * @Author: Himit_ZH
@@ -43,6 +46,16 @@ public class AdminTrainingCategoryServiceImpl implements AdminTrainingCategorySe
     public CommonResult<Void> deleteTrainingCategory(Long cid) {
         try {
             adminTrainingCategoryManager.deleteTrainingCategory(cid);
+            return CommonResult.successResponse();
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
+        }
+    }
+
+    @Override
+    public CommonResult<Void> updateCategoryRank(CategoryRankDTO rankDTO) {
+        try {
+            adminTrainingCategoryManager.updateCategoryRank(rankDTO);
             return CommonResult.successResponse();
         } catch (StatusFailException e) {
             return CommonResult.errorResponse(e.getMessage());

@@ -7,10 +7,12 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 import top.hcode.hoj.common.result.CommonResult;
 
+import top.hcode.hoj.pojo.dto.trainingCategory.CategoryRankDTO;
 import top.hcode.hoj.pojo.entity.training.TrainingCategory;
 import top.hcode.hoj.service.admin.training.AdminTrainingCategoryService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Himit_ZH
@@ -44,5 +46,12 @@ public class AdminTrainingCategoryController {
     @RequiresRoles(value = {"root", "teacher"}, logical = Logical.OR)
     public CommonResult<Void> deleteTrainingCategory(@RequestParam("cid") Long cid) {
         return adminTrainingCategoryService.deleteTrainingCategory(cid);
+    }
+
+    @PutMapping("/rank")
+    @RequiresAuthentication
+    @RequiresRoles(value = {"root", "teacher"}, logical = Logical.OR)
+    public CommonResult<Void> updateCategoryRank(@RequestBody CategoryRankDTO rankDTO) {
+        return adminTrainingCategoryService.updateCategoryRank(rankDTO);
     }
 }

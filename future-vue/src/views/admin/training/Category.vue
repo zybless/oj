@@ -84,6 +84,7 @@ export default {
   },
   mounted() {
     this.getTrainingCategoryList();
+    console.log('标签categoryList:', this.categoryList);
   },
   methods: {
     getTrainingCategoryList() {
