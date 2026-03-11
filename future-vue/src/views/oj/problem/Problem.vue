@@ -1904,6 +1904,41 @@ export default {
 };
 </script>
 <style>
+/* 简洁且保留全边框的表格样式 */
+.hint-content table {
+  width: 100%;
+  border-collapse: collapse; /* 这一步至关重要，让边框合并为单线 */
+  margin: 15px 0;
+  font-size: 14px;
+  /* 表格最外层的边框 */
+  border: 1px solid #dcdfe6;
+}
+
+/* 单元格的边框，使用浅色，避免线条太重影响阅读 */
+.hint-content table th,
+.hint-content table td {
+  border: 1px solid #dcdfe6;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+/* 表头：浅灰色背景，配合全边框 */
+.hint-content table th {
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: #303133;
+}
+
+/* 斑马纹：一行白色（默认），一行极浅的灰色 */
+.hint-content table tr:nth-child(even) {
+  background-color: #f9fafc; 
+}
+
+/* 悬停效果：增加一层明显的视觉反馈 */
+.hint-content table tr:hover {
+  background-color: #f0f2f5;
+}
+
 .katex .katex-mathml {
   display: none;
 }
