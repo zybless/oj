@@ -429,9 +429,28 @@ export default {
       this.REMOTE_OJ = Object.assign({}, REMOTE_OJ);
     },
 
+    // goEdit(problemId) {
+    //   if (this.routeName === "admin-problem-list") {
+    //     this.$router.push({
+    //       name: "admin-edit-problem",
+    //       params: { problemId },
+    //       query: {
+    //         back: this.$route.fullPath,
+    //       },
+    //     });
+    //   } else if (this.routeName === "admin-contest-problem-list") {
+    //     this.$router.push({
+    //       name: "admin-edit-contest-problem",
+    //       params: { problemId: problemId, contestId: this.query.contestId },
+    //     });
+    //   }
+    // },
     goEdit(problemId) {
+      let routeData;
+
       if (this.routeName === "admin-problem-list") {
-        this.$router.push({
+        // 对应第一个跳转逻辑
+        routeData = this.$router.resolve({
           name: "admin-edit-problem",
           params: { problemId },
           query: {
@@ -439,10 +458,19 @@ export default {
           },
         });
       } else if (this.routeName === "admin-contest-problem-list") {
-        this.$router.push({
+        // 对应第二个跳转逻辑
+        routeData = this.$router.resolve({
           name: "admin-edit-contest-problem",
-          params: { problemId: problemId, contestId: this.query.contestId },
+          params: { 
+            problemId: problemId, 
+            contestId: this.query.contestId 
+          },
         });
+      }
+
+      // 如果 routeData 被正确赋值，则打开新窗口
+      if (routeData) {
+        window.open(routeData.href, '_blank');
       }
     },
     goCreateProblem() {
