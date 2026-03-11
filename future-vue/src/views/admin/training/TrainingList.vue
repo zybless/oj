@@ -198,23 +198,45 @@ export default {
         }
       );
     },
-    goEdit(trainingId) {
-      this.$router.push({
-        name: 'admin-edit-training',
-        params: { trainingId },
+    // goEdit(trainingId) {
+    //   this.$router.push({
+    //     name: 'admin-edit-training',
+    //     params: { trainingId },
+    //   });
+    // },
+    // goTrainingProblemList(trainingId) {
+    //   this.$router.push({
+    //     name: 'admin-training-problem-list',
+    //     params: { trainingId },
+    //   });
+    // },
+    // goTrainingExamList(trainingId) {
+    //   this.$router.push({
+    //     name: 'admin-training-exam-list',
+    //     params: { trainingId },
+    //   });
+    // },
+    
+    // 通用方法：在新标签页打开路由
+    openNewTab(routeName, params) {
+      let routeData = this.$router.resolve({
+        name: routeName,
+        params: params
       });
+      window.open(routeData.href, '_blank');
     },
+
+    // 现在你的业务方法就非常简洁了
     goTrainingProblemList(trainingId) {
-      this.$router.push({
-        name: 'admin-training-problem-list',
-        params: { trainingId },
-      });
+      this.openNewTab('admin-training-problem-list', { trainingId });
     },
+
     goTrainingExamList(trainingId) {
-      this.$router.push({
-        name: 'admin-training-exam-list',
-        params: { trainingId },
-      });
+      this.openNewTab('admin-training-exam-list', { trainingId });
+    },
+
+    goEdit(trainingId) {
+      this.openNewTab('admin-edit-training', { trainingId });
     },
     deleteTraining(trainingId) {
       this.$confirm(this.$i18n.t('m.Delete_Training_Tips'), 'Tips', {
