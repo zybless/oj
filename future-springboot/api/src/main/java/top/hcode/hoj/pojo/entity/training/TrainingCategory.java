@@ -44,4 +44,8 @@ public class TrainingCategory implements Serializable {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
+
+    @ApiModelProperty(value = "排序值")
+    @TableField("sort")
+    private Integer sort;
 }
