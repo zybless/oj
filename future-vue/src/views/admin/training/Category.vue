@@ -16,19 +16,25 @@
         </div>
       </div>
 
-      <el-tag
-        :key="index"
-        v-for="(category, index) in categoryList"
-        closable
-        :color="category.color ? category.color : '#409eff'"
-        effect="dark"
-        :disable-transitions="false"
-        @close="deleteCategory(category)"
-        @click="openCategoryDialog('update', category)"
-        class="category"
+      <draggable
+        v-model="categoryList"
+        animation="200"
+        @end="onDragEnd"
       >
-        {{ category.name }}
-      </el-tag>
+        <el-tag
+          :key="category.id"
+          v-for="category in categoryList"
+          closable
+          :color="category.color ? category.color : '#409eff'"
+          effect="dark"
+          :disable-transitions="false"
+          @close="deleteCategory(category)"
+          @click="openCategoryDialog('update', category)"
+          class="category"
+        >
+          {{ category.name }}
+        </el-tag>
+      </draggable>
 
       <el-button
         class="button-new-category"
@@ -63,10 +69,14 @@
     </el-dialog>
   </div>
 </template>
+
 <script>
 import myMessage from '@/common/message';
 import api from '@/common/api';
+import draggable from 'vuedraggable';
+
 export default {
+  components: { draggable },
   data() {
     return {
       getCategoryListLoading: false,
@@ -84,7 +94,6 @@ export default {
   },
   mounted() {
     this.getTrainingCategoryList();
-    console.log('标签categoryList:', this.categoryList);
   },
   methods: {
     getTrainingCategoryList() {
@@ -96,6 +105,27 @@ export default {
         },
         (err) => {
           this.getCategoryListLoading = false;
+        }
+      );
+    },
+
+    onDragEnd(evt) {
+      const { oldIndex, newIndex } = evt;
+      if (oldIndex === newIndex) return;
+
+      const dragId = this.categoryList[newIndex].id;
+      const prevId = newIndex > 0 ? this.categoryList[newIndex - 1].id : null;
+      const nextId = newIndex < this.categoryList.length - 1 ? this.categoryList[newIndex + 1].id : null;
+
+      api.admin_updateCategoryRank({ dragId, prevId, nextId }).then(
+        () => {},
+        () => {
+          // 失败回滚：把元素移回原位
+          const list = [...this.categoryList];
+          const [moved] = list.splice(newIndex, 1);
+          list.splice(oldIndex, 0, moved);
+          this.categoryList = list;
+          myMessage.error('排序更新失败，已回滚');
         }
       );
     },
@@ -116,6 +146,7 @@ export default {
         () => {}
       );
     },
+
     openCategoryDialog(action, category) {
       if (action == 'add') {
         this.upsertTitle = 'Add_Category';
@@ -140,7 +171,6 @@ export default {
           (res) => {
             this.upsertCategoryLoading = false;
             myMessage.success(this.$i18n.t('m.Update_Successfully'));
-            this.categoryList.push(res.data.data);
             this.addCategoryDialogVisible = false;
             this.getTrainingCategoryList();
           },
@@ -166,6 +196,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .filter {
   margin-top: 10px;
@@ -178,7 +209,7 @@ export default {
   margin-top: 10px;
 }
 .category {
-  cursor: pointer;
+  cursor: grab;
 }
 .button-new-category {
   margin-left: 10px;
