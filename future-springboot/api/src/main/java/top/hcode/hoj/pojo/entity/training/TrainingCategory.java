@@ -47,5 +47,5 @@ public class TrainingCategory implements Serializable {
 
     @ApiModelProperty(value = "Lexorank 排序值，字典序排序")
     @TableField("lex_rank")
-    private String LexRank;
+    private String lexRank;
 }
