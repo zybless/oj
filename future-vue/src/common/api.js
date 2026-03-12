@@ -1814,6 +1814,12 @@ const adminApi = {
       },
     });
   },
+  
+  admin_updateCategoryRank(data) {
+    return ajax("/api/admin/training/category/rank", "put", {
+      data,
+    });
+  },
 
   admin_getContestProblemInfo(pid, cid) {
     return ajax("/api/admin/contest/contest-problem", "get", {
