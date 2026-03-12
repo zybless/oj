@@ -261,6 +261,7 @@ public class AdminExamManager {
         dbExam.setStartTime(exam.getStartTime());
         dbExam.setEndTime(exam.getEndTime());
         dbExam.setExamRepoId(exam.getExamRepoId());
+        dbExam.setShowResult(exam.getShowResult());
 
         dbExam.setModifiedUser(userRolesVo.getUsername());
         boolean isOk = examEntityService.saveOrUpdate(dbExam);
