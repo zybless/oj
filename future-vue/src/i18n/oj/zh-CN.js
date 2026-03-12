@@ -417,6 +417,7 @@ export const m = {
   Enter_the_contest_password: '请输入比赛密码',
   Enter: '进入',
   Overview: '比赛简介',
+  Performance: '成绩',
   Announcement: '公告',
   Submissions: '提交记录',
   Rankings: '排行榜',
