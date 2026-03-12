@@ -77,13 +77,13 @@ public class AdminTrainingCategoryManager {
         if (rankDTO.getPrevId() != null) {
             TrainingCategory prev = trainingCategoryEntityService.getById(rankDTO.getPrevId());
             if (prev == null) throw new StatusFailException("前置分类不存在");
-            prevRank = prev.getRank();
+            prevRank = prev.getLexRank();
         }
 
         if (rankDTO.getNextId() != null) {
             TrainingCategory next = trainingCategoryEntityService.getById(rankDTO.getNextId());
             if (next == null) throw new StatusFailException("后置分类不存在");
-            nextRank = next.getRank();
+            nextRank = next.getLexRank();
         }
 
         // 计算新 rank
@@ -93,7 +93,7 @@ public class AdminTrainingCategoryManager {
         boolean isOk = trainingCategoryEntityService.update(
                 new LambdaUpdateWrapper<TrainingCategory>()
                         .eq(TrainingCategory::getId, rankDTO.getDragId())
-                        .set(TrainingCategory::getRank, newRank)
+                        .set(TrainingCategory::getLexRank, newRank)
         );
 
         if (!isOk) {

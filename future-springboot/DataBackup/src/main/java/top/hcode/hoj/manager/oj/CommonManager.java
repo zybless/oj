@@ -73,7 +73,7 @@ public class CommonManager {
     public List<TrainingCategory> getTrainingCategory() {
         QueryWrapper<TrainingCategory> trainingCategoryQueryWrapper = new QueryWrapper<>();
         trainingCategoryQueryWrapper.isNull("gid");
-        trainingCategoryQueryWrapper.orderByAsc("rank");
+        trainingCategoryQueryWrapper.orderByAsc("lex_rank");
         return trainingCategoryEntityService.list(trainingCategoryQueryWrapper);
     }
 

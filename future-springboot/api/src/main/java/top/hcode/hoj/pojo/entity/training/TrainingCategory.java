@@ -46,6 +46,6 @@ public class TrainingCategory implements Serializable {
     private Date gmtModified;
 
     @ApiModelProperty(value = "Lexorank 排序值，字典序排序")
-    @TableField("rank")
-    private String rank;
+    @TableField("lex_rank")
+    private String LexRank;
 }
