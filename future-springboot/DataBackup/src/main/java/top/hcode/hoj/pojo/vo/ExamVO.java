@@ -79,6 +79,7 @@ public class ExamVO {
         this.examRepoId = exam.getExamRepoId();
         this.startTime = exam.getStartTime();
         this.endTime = exam.getEndTime();
+        this.showResult = exam.getShowResult();
         this.modifiedUser = exam.getModifiedUser();
         this.gmtCreate = exam.getGmtCreate();
         this.gmtModified = exam.getGmtModified();
