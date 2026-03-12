@@ -19,6 +19,15 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item prop="showResult" label="查看成绩">
+        <el-switch
+          v-model="form.showResult"
+          :active-value="1"
+          :inactive-value="0"
+          active-text="可查看"
+          inactive-text="不可查看">
+        </el-switch>
+      </el-form-item>
       <el-form-item prop="startTime" label="开始时间" required>
         <el-date-picker
           v-model="form.startTime"
@@ -95,6 +104,7 @@ export default {
           problemCount: 0,
           remark: "",
           timeLimit: 1,
+          showResult: 0,
         };
       }
       this.dialogFormVisible = true;
