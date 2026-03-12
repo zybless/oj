@@ -44,3 +44,9 @@ export function updateChooseProblems(data, repoId) {
     data,
   });
 }
+
+export function getChooseExamMyResult(examId) {
+  return ajax("/api/exam/my-result", "get", {
+    params: { examId },
+  });
+}

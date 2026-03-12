@@ -9,7 +9,9 @@ import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.pojo.dto.ExamRankDTO;
 import top.hcode.hoj.pojo.dto.ExamSubmitDTO;
 import top.hcode.hoj.pojo.entity.exam.Exam;
+import top.hcode.hoj.pojo.entity.exam.ExamHistory;
 import top.hcode.hoj.pojo.entity.exam.ExamRepo;
+import top.hcode.hoj.pojo.vo.ExamHistoryVO;
 import top.hcode.hoj.pojo.vo.ExamProblemVO;
 import top.hcode.hoj.pojo.vo.ExamVO;
 import top.hcode.hoj.service.exam.ExamService;
@@ -44,6 +46,12 @@ public class ExamController {
     @RequiresAuthentication
     public CommonResult<IPage<ExamProblemVO>> submitExercise(@RequestBody ExamSubmitDTO examSubmitDTO) {
         return examService.submitExercise(examSubmitDTO);
+    }
+
+    @GetMapping("/my-result")
+    @RequiresAuthentication
+    public CommonResult<ExamHistoryVO> getMyExamResult(@RequestParam Long examId) {
+        return examService.getMyExamResult(examId);
     }
 
 

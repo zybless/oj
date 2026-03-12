@@ -10,6 +10,8 @@ import top.hcode.hoj.common.result.ResultStatus;
 import top.hcode.hoj.manager.exam.ExamManager;
 import top.hcode.hoj.pojo.dto.ExamRankDTO;
 import top.hcode.hoj.pojo.dto.ExamSubmitDTO;
+import top.hcode.hoj.pojo.entity.exam.ExamHistory;
+import top.hcode.hoj.pojo.vo.ExamHistoryVO;
 import top.hcode.hoj.pojo.vo.ExamProblemVO;
 import top.hcode.hoj.pojo.vo.ExamVO;
 import top.hcode.hoj.service.exam.ExamService;
@@ -42,6 +44,15 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public CommonResult<IPage<ExamProblemVO>> submitExercise(ExamSubmitDTO examSubmitDTO) {
         return null;
+    }
+
+    @Override
+    public CommonResult<ExamHistoryVO> getMyExamResult(Long examId) {
+        try {
+            return CommonResult.successResponse(examManager.getMyExamResult(examId));
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
+        }
     }
 
 }

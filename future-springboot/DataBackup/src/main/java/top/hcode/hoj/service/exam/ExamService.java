@@ -5,6 +5,8 @@ import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.pojo.dto.ExamRankDTO;
 import top.hcode.hoj.pojo.dto.ExamSubmitDTO;
 import top.hcode.hoj.pojo.entity.exam.Exam;
+import top.hcode.hoj.pojo.entity.exam.ExamHistory;
+import top.hcode.hoj.pojo.vo.ExamHistoryVO;
 import top.hcode.hoj.pojo.vo.ExamProblemVO;
 import top.hcode.hoj.pojo.vo.ExamVO;
 
@@ -19,4 +21,6 @@ public interface ExamService {
     CommonResult<IPage<ExamProblemVO>> submitExercise(ExamSubmitDTO examSubmitDTO);
 
     CommonResult<ExamVO> getExam(Long examId);
+
+    CommonResult<ExamHistoryVO> getMyExamResult(Long examId);
 }

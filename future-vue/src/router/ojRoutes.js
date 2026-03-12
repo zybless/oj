@@ -25,6 +25,7 @@ import ContestProblemList from "@/views/oj/contest/children/ContestProblemList.v
 import ExamProblemList from "@/views/oj/chooseExam/children/ExamProblemList";
 import ContestRank from "@/views/oj/contest/children/ContestRank.vue";
 import ExamRank from "@/views/oj/chooseExam/children/ExamRank.vue";
+import ExamPerformance from "@/views/oj/chooseExam/children/ExamPerformance.vue";
 import ACMInfoAdmin from "@/views/oj/contest/children/ACMInfoAdmin.vue";
 import Announcements from "@/components/oj/common/Announcements.vue";
 import ContestComment from "@/views/oj/contest/children/ContestComment.vue";
@@ -282,6 +283,12 @@ const ojRoutes = [
         component: ExamRank,
         meta: { title: "Exam Rank" },
       },
+      {
+        name: "ExamPerformance",
+        path: "performance",
+        component: ExamPerformance,
+        meta: { title: "Exam Performance" },
+      }
     ],
   },
   {

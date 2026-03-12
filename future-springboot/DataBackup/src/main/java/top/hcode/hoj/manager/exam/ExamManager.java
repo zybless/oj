@@ -17,6 +17,7 @@ import top.hcode.hoj.pojo.entity.exam.Exam;
 import top.hcode.hoj.pojo.entity.exam.ExamHistory;
 import top.hcode.hoj.pojo.entity.exam.ExamRepo;
 import top.hcode.hoj.pojo.entity.user.UserInfo;
+import top.hcode.hoj.pojo.vo.ExamHistoryVO;
 import top.hcode.hoj.pojo.vo.ExamRankVO;
 import top.hcode.hoj.pojo.vo.ExamVO;
 import top.hcode.hoj.shiro.AccountProfile;
@@ -57,6 +58,24 @@ public class ExamManager {
         ExamRepo examRepo = examRepoEntityService.getById(exam.getExamRepoId());
         exam.setExamRepo(examRepo);
         return exam;
+    }
+
+    public ExamHistoryVO getMyExamResult(Long examId) throws StatusFailException {
+        AccountProfile userInfo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+
+        QueryWrapper<ExamHistory> wrapper = new QueryWrapper<>();
+        wrapper.eq("exam_id", examId)
+                .eq("user_id", userInfo.getUid())
+                .isNotNull("submit_time")
+                .last("LIMIT 1");
+
+        ExamHistory examHistory = examHistoryEntityService.getOne(wrapper, false);
+        if (examHistory == null) {
+            throw new StatusFailException("暂无成绩，您尚未提交本次考试");
+        }
+
+        // 复用现有方法
+        return examHistoryEntityService.getExamHistoryVO(examHistory.getId());
     }
 
 }
