@@ -44,6 +44,8 @@ public class Exam implements Serializable {
 
     private Date endTime;
 
+    private Integer showResult;
+
     private String modifiedUser;
 
     private Date gmtCreate;
