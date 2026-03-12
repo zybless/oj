@@ -81,12 +81,15 @@
         <!-- 判断是否需要密码验证 -->
   
         <el-tabs @tab-click="tabClick" v-model="route_name">
-          <el-tab-pane name="ChooseExamDetails" lazy>
+          <el-tab-pane 
+            name="ChooseExamDetails" 
+            lazy
+          >
             <span slot="label"
               ><i class="el-icon-s-home"></i>&nbsp;{{ $t('m.Overview') }}</span
             >
             <el-card class="box-card">
-              <Markdown 
+              <Markdown
                 :content="chooseExamDetail.remark">
               </Markdown>
             </el-card>
@@ -116,6 +119,17 @@
             >
             <transition name="el-zoom-in-bottom">
               <router-view v-if="route_name === 'ExamRank'"></router-view>
+            </transition>
+          </el-tab-pane>
+
+          <el-tab-pane v-if="chooseExamDetail.showResult === 1" name="ExamPerformance" lazy >
+            <span slot="label"
+              ><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;{{
+                $t('m.Performance')
+              }}</span
+            >
+            <transition name="el-zoom-in-bottom">
+              <router-view v-if="route_name === 'ExamPerformance'"></router-view>
             </transition>
           </el-tab-pane>
   

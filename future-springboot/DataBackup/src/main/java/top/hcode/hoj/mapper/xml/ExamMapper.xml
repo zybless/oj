@@ -37,7 +37,7 @@
         </where>
     </select>
     <select id="getExamUser" resultType="top.hcode.hoj.pojo.vo.ExamVO">
-        SELECT DISTINCT e.id, e.title, e.exam_repo_id, e.remark, e.start_time, e.end_time
+        SELECT DISTINCT e.id, e.title, e.exam_repo_id, e.remark, e.start_time, e.end_time, e.show_result
         FROM exam e
         WHERE e.id = #{examId}
     </select>
