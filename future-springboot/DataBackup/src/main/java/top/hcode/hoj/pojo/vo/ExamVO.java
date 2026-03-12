@@ -50,6 +50,9 @@ public class ExamVO {
     @ApiModelProperty(value = "考试结束时间")
     private Date endTime;
 
+    @ApiModelProperty(value = "是否展示考试结果")
+    private Integer showResult;
+
     @ApiModelProperty(value = "修改题目的管理员用户名")
     private String modifiedUser;
 
