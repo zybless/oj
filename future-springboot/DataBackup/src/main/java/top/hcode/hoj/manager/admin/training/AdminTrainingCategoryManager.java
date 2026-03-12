@@ -33,10 +33,23 @@ public class AdminTrainingCategoryManager {
         trainingCategoryQueryWrapper.eq(trainingCategory.getGid() != null, "gid", trainingCategory.getGid())
                 .eq("name", trainingCategory.getName());
         TrainingCategory existedTrainingCategory = trainingCategoryEntityService.getOne(trainingCategoryQueryWrapper, false);
-
         if (existedTrainingCategory != null) {
             throw new StatusFailException("该分类名称已存在！请勿重复添加！");
         }
+
+        // 查同组最后一个 lex_rank
+        QueryWrapper<TrainingCategory> lastWrapper = new QueryWrapper<>();
+        lastWrapper.eq(trainingCategory.getGid() != null, "gid", trainingCategory.getGid())
+                .isNull(trainingCategory.getGid() == null, "gid")
+                .orderByDesc("lex_rank")
+                .last("LIMIT 1");
+        TrainingCategory lastCategory = trainingCategoryEntityService.getOne(lastWrapper, false);
+
+        // 生成新 lex_rank，排在最后
+        String newLexRank = lastCategory != null
+                ? LexoRankUtils.after(lastCategory.getLexRank())
+                : "naaaa";
+        trainingCategory.setLexRank(newLexRank);
 
         boolean isOk = trainingCategoryEntityService.save(trainingCategory);
         if (!isOk) {
