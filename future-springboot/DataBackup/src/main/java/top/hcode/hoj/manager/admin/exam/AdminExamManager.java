@@ -292,7 +292,7 @@ public class AdminExamManager {
     public ExamHistoryVO getExamHistoryDetail(Long historyId) throws StatusFailException {
         ExamHistoryVO examHistoryVO = examHistoryEntityService.getExamHistoryVO(historyId);
         if (examHistoryVO == null) {
-            throw new StatusFailException("改历史成绩不存在！");
+            throw new StatusFailException("该历史成绩不存在！");
         }
         return examHistoryVO;
     }
