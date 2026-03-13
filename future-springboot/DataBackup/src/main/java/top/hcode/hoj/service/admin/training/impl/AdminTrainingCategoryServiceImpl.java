@@ -59,6 +59,8 @@ public class AdminTrainingCategoryServiceImpl implements AdminTrainingCategorySe
             return CommonResult.successResponse();
         } catch (StatusFailException e) {
             return CommonResult.errorResponse(e.getMessage());
+        } catch (Exception e) {
+            return CommonResult.errorResponse("排序更新失败，请刷新后重试");
         }
     }
 }

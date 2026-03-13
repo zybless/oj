@@ -15,12 +15,6 @@ import top.hcode.hoj.utils.LexoRankUtils;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * @Author: Himit_ZH
- * @Date: 2022/3/9 19:29
- * @Description:
- */
-
 @Component
 @Slf4j(topic = "hoj")
 public class AdminTrainingCategoryManager {
@@ -37,7 +31,6 @@ public class AdminTrainingCategoryManager {
             throw new StatusFailException("该分类名称已存在！请勿重复添加！");
         }
 
-        // 查同组最后一个 lex_rank
         QueryWrapper<TrainingCategory> lastWrapper = new QueryWrapper<>();
         lastWrapper.eq(trainingCategory.getGid() != null, "gid", trainingCategory.getGid())
                 .isNull(trainingCategory.getGid() == null, "gid")
@@ -45,7 +38,6 @@ public class AdminTrainingCategoryManager {
                 .last("LIMIT 1");
         TrainingCategory lastCategory = trainingCategoryEntityService.getOne(lastWrapper, false);
 
-        // 生成新 lex_rank，排在最后
         String newLexRank = lastCategory != null
                 ? LexoRankUtils.after(lastCategory.getLexRank())
                 : "naaaa";
@@ -70,49 +62,74 @@ public class AdminTrainingCategoryManager {
         if (!isOk) {
             throw new StatusFailException("删除失败！");
         }
-        // 获取当前登录的用户
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
         log.info("[{}],[{}],categoryId:[{}],operatorUid:[{}],operatorUsername:[{}]",
                 "Admin_Training", "Delete_Category", cid, userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void updateCategoryRank(CategoryRankDTO rankDTO) throws StatusFailException {
-        // 查拖拽项
         TrainingCategory dragItem = trainingCategoryEntityService.getById(rankDTO.getDragId());
-        if (dragItem == null) {
-            throw new StatusFailException("分类不存在");
-        }
+        if (dragItem == null) throw new StatusFailException("分类不存在");
 
-        // 查前后邻居的 rank 值
-        String prevRank = null;
-        String nextRank = null;
-
+        String prevRank = null, nextRank = null;
         if (rankDTO.getPrevId() != null) {
             TrainingCategory prev = trainingCategoryEntityService.getById(rankDTO.getPrevId());
             if (prev == null) throw new StatusFailException("前置分类不存在");
             prevRank = prev.getLexRank();
         }
-
         if (rankDTO.getNextId() != null) {
             TrainingCategory next = trainingCategoryEntityService.getById(rankDTO.getNextId());
             if (next == null) throw new StatusFailException("后置分类不存在");
             nextRank = next.getLexRank();
         }
 
-        // 计算新 rank
-        String newRank = LexoRankUtils.between(prevRank, nextRank);
+        String newRank;
+        try {
+            newRank = LexoRankUtils.between(prevRank, nextRank);
+        } catch (IllegalArgumentException e) {
+            // rank 空间不足或已有脏数据 → 先 rebalance，再重试
+            log.warn("[LexoRank] rebalancing gid={}, reason: {}", dragItem.getGid(), e.getMessage());
+            rebalanceCategoryRanks(dragItem.getGid());
 
-        // 只更新一条记录
+            // rebalance 后重新读取邻居最新 rank
+            if (rankDTO.getPrevId() != null) {
+                prevRank = trainingCategoryEntityService.getById(rankDTO.getPrevId()).getLexRank();
+            }
+            if (rankDTO.getNextId() != null) {
+                nextRank = trainingCategoryEntityService.getById(rankDTO.getNextId()).getLexRank();
+            }
+            try {
+                newRank = LexoRankUtils.between(prevRank, nextRank);
+            } catch (IllegalArgumentException e2) {
+                log.error("[LexoRank] still failed after rebalance", e2);
+                throw new StatusFailException("排序空间不足，请刷新页面后重试");
+            }
+        }
+
         boolean isOk = trainingCategoryEntityService.update(
                 new LambdaUpdateWrapper<TrainingCategory>()
                         .eq(TrainingCategory::getId, rankDTO.getDragId())
                         .set(TrainingCategory::getLexRank, newRank)
         );
-
-        if (!isOk) {
-            throw new StatusFailException("排序更新失败");
-        }
+        if (!isOk) throw new StatusFailException("排序更新失败");
     }
 
+    private void rebalanceCategoryRanks(Long gid) {
+        QueryWrapper<TrainingCategory> wrapper = new QueryWrapper<>();
+        wrapper.eq(gid != null, "gid", gid)
+                .isNull(gid == null, "gid")
+                .orderByAsc("lex_rank", "id");
+        List<TrainingCategory> items = trainingCategoryEntityService.list(wrapper);
+        if (items.isEmpty()) return;
 
+        List<String> newRanks = LexoRankUtils.generateBalancedRanks(items.size());
+        for (int i = 0; i < items.size(); i++) {
+            trainingCategoryEntityService.update(
+                    new LambdaUpdateWrapper<TrainingCategory>()
+                            .eq(TrainingCategory::getId, items.get(i).getId())
+                            .set(TrainingCategory::getLexRank, newRanks.get(i))
+            );
+        }
+        log.info("[LexoRank] rebalanced {} items for gid={}", items.size(), gid);
+    }
 }
